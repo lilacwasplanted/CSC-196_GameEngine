@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Math/Math.h"
-#include "Renderer/Renderer.h"
+#include <Math/Math.h>
+#include <Renderer/Renderer.h>
 #include <SDL3/SDL.h>
 using namespace std;
 

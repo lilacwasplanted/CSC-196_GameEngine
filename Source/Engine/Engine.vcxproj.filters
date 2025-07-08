@@ -31,9 +31,6 @@
     <ClInclude Include="Core\Random.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
-      <Filter>Source\Core</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Include</Filter>
     </ClInclude>

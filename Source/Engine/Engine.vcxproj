@@ -156,7 +156,6 @@
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
