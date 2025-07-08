@@ -57,6 +57,7 @@
 
 		void Renderer::Present()
 		{
+			SDL_RenderPresent(_renderer);
 
 		}
 	}

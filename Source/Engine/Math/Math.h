@@ -1,8 +1,8 @@
 #pragma once
 
-#include<cmath>
-#include<algorithm>
-#include<SDL3/SDL.h>
+#include <cmath>
+#include <algorithm>
+#include <SDL3/SDL.h>
 
 namespace viper{
 	namespace math{

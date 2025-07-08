@@ -1,7 +1,7 @@
-#include "\Users\sombr\Neumont College Of Computer Science\Year II\Summer\Sprint I\C++ Programming II\Cpp_II\Source\Engine\Core\Random.h"
-#include "\Users\sombr\Neumont College Of Computer Science\Year II\Summer\Sprint I\C++ Programming II\Cpp_II\Source\Engine\Math\Vector2.h"
-#include "\Users\sombr\Neumont College Of Computer Science\Year II\Summer\Sprint I\C++ Programming II\Cpp_II\Source\Engine\Math\Math.h"
-#include "\Users\sombr\Neumont College Of Computer Science\Year II\Summer\Sprint I\C++ Programming II\Cpp_II\Source\Engine\Renderer\Renderer.h"
+#include "Core\Random.h"
+#include "Math\Vector2.h"
+#include "Math\Math.h"
+#include "Renderer\Renderer.h"
 
 #include "Core/Time.h"
 #include <SDL3/SDL.h>
@@ -20,11 +20,14 @@ using namespace std;
         SDL_Event e;
         bool quit = false;
 
-        vector<vec2> stars;
+        vector<viper::vec2> disco;
+        vector<viper::vec2> stars;
         for (int i = 0; i < 100; i++) {
-            stars.pushback(vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
+            stars.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
+            disco.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
             
         }
+
 
         while (!quit) {
             while (SDL_PollEvent(&e)) {
@@ -38,15 +41,15 @@ using namespace std;
             renderer.Clear();
 
 
-            viper::vec2 speed{ -140.0f, 0.0f };
+            viper::vec2 speed{ 140.0f, 0.0f };
             float length = speed.Length();
 
 
             for (auto& star : stars) {
                 star += speed * time.GetDeltaTime();
 
-                if (star[0] > 1280) star[0] = 0;
-                if (star[0] < 0) star[0] = 1280;
+                if (star[0] > 1280)  star[0] = 0; 
+                if (star[0] < 0)  star[0] = 1280; 
 
                 renderer.SetColor(viper::random::getRandomInt(256), viper::random::getRandomInt(256), viper::random::getRandomInt(256), 255);
                 renderer.DrawPoint(star.x, star.y);
@@ -54,29 +57,17 @@ using namespace std;
 
 
 
+            for (auto& lights : disco) {
 
+
+                renderer.SetColor(viper::random::getRandomInt(256), viper::random::getRandomInt(256), viper::random::getRandomInt(256), 255);
+
+                renderer.DrawLine(viper::random::getRandomInt(1280), viper::random::getRandomInt(1024), viper::random::getRandomInt(1280), viper::random::getRandomInt(1024));
+                renderer.Present(); // Render the screen
+
+
+            }
 
         }
-    /*
-        // Define a rectangle
-        SDL_FRect greenSquare{ 270, 190, 200, 200 };
-
-  
-            SDL_SetColor(renderer, getRandomInt(256), getRandomInt(256), getRandomInt(256), 255); // Set render draw color to black
-            Set.Draline(viper
-            SDL_RenderClear(renderer); // Clear the renderer
-
-            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Set render draw color to green
-            SDL_RenderFillRect(renderer, &greenSquare); // Render the rectangle
-
-            SDL_RenderPresent(renderer); // Render the screen
-        }
-
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-
-        return 0;
-        */
     }
 
