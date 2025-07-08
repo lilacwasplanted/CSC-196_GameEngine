@@ -151,8 +151,8 @@
     <ClCompile Include="Renderer\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Math.h" />
     <ClInclude Include="Core\Random.h" />
+    <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="resource.h" />
