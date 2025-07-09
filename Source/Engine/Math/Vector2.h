@@ -35,6 +35,9 @@ namespace viper {
 		Vector2& operator /= (float s) { x /= s;	y /= s; return *this; }
 
 		//sqrt (x*x + y*y)
+		///Hello
+		
+
 		float LengthSqr() { return((x * x) + (y * y)); }
 		float Length() { return viper::math::sqrtf(LengthSqr()); }
 

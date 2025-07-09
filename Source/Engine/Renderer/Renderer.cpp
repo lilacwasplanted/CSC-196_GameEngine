@@ -15,6 +15,7 @@
 
 		void Renderer::Shutdown()
 		{
+	//		SDL_Renderer
 		}
 
 		bool Renderer::CreateWindow(const string& name, int width, int height)
