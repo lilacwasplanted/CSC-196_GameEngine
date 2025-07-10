@@ -1,16 +1,18 @@
-#include "Core\Random.h"
+#include "Core/Random.h"
 #include "Core/Time.h"
 #include "Math\Vector2.h"
 #include "Math\Math.h"
 #include "Renderer\Renderer.h"
 #include "Input/InputSystem.h"
 
+//#include <fmod.h>
 #include <SDL3/SDL.h>
 #include <iostream>
 #include <vector>
 using namespace std;
 
     int main(int argc, char* argv[]) {
+        //Initialize Engine Systems
         viper::Renderer renderer;
         viper::Time time;
 
@@ -20,18 +22,20 @@ using namespace std;
         viper::is input;
         input.Initialize();
 
+        //Create Audio Systems
 
-        SDL_Event e;
-        bool quit = false;
+        //Initialize objects
 
 
         vector<viper::vec2> disco;
         vector<viper::vec2> stars;
         for (int i = 0; i < 100; i++) {
             stars.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
-            disco.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
-            
         }
+
+        SDL_Event e;
+        bool quit = false;
+
 
         //MAIN LOOP HERE--------------------------------------------------------------------------------------
         while (!quit) {
@@ -41,21 +45,24 @@ using namespace std;
                 }
             }
 
+
+            //Update Engine Systems
             input.Update();
+
+            //Get Input
             if (input.GetKeyPressed(SDL_SCANCODE_A)) {
                 cout << "Pressed." << endl;
             }
-            if (input.GetKeyReleased(SDL_SCANCODE_A)) {
-                cout << "Pressed." << endl;
-            }
 
-            if (input.GetMouseButtonDown(0)) {
+            if (input.GetMouseButtonDown(viper::is::MouseButton::Left)) {
                 cout << "Mouse Pressed." << endl;
             }
             viper::vec2 mouse = input.GetMousePos();
             cout <<"(" << mouse.x << ", " << mouse.y << ")" << endl;
 
 
+
+            //Draw
             renderer.SetColor(0, 0, 0);
             renderer.Clear();
 

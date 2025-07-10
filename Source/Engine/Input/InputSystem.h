@@ -11,6 +11,14 @@ namespace viper {
 
 	public:
 	
+		enum class MouseButton : uint8_t {
+			Left,
+			Middle,
+			Right
+
+		};
+	
+
 		void InputSystem() {}
 
 		bool Initialize();
@@ -25,10 +33,10 @@ namespace viper {
 
 
 		//mouse input
-		bool GetMouseButtonDown(unsigned int button) { assert(button < 3);  return _mouseButtonState[button]; }
-		bool GetPrevMouseButtonDown(unsigned int button) { assert(button < 3);  return _prevMouseButtonState[button]; }
-		bool GetMouseButtonPressed(unsigned int button) const { assert(button < 3); return !_prevMouseButtonState[button] && _mouseButtonState[button]; }
-		bool GetMouseButtonReleased(unsigned int button) const { assert(button < 3); return _prevMouseButtonState[button] && !_mouseButtonState[button]; }
+		bool GetMouseButtonDown(MouseButton button) { return _mouseButtonState[(uint8_t)button]; }
+		bool GetPrevMouseButtonDown(MouseButton button) {return _prevMouseButtonState[(uint8_t)button]; }
+		bool GetMouseButtonPressed(MouseButton button) const {return !_prevMouseButtonState[(uint8_t)button] && _mouseButtonState[(uint8_t)button]; }
+		bool GetMouseButtonReleased(MouseButton button) const { return _prevMouseButtonState[(uint8_t)button] && !_mouseButtonState[(uint8_t)button]; }
 
 		const vec2& GetMousePos() const { return _mousePos; }
 		const vec2& GetPrevMousePos() const{ return _prevMousePos; }
