@@ -1,4 +1,5 @@
 #include "AudioSystem.h"
+#include "../Core/StringHelper.h"
 #include <fmod_errors.h>
 #include <iostream>
 
@@ -47,10 +48,7 @@ namespace viper {
 		bool as::AddSound(const string& filename, const string& name)
 		{
 			string key = (name.empty()) ? filename : name;
-			//convert to lowercase
-			for (char& c : key) {
-				c = tolower(c);
-			}
+			key = toLower(key);
 
 			//Check If Key Exists In Sounds Map
 			if (_sounds.find(key) != _sounds.end()) {
