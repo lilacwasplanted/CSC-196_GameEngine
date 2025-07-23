@@ -7,7 +7,7 @@ namespace viper {
 	template<typename T>
 	struct Vector2 {
 		T x, y;
-		Vector2() {}
+		Vector2() = default;
 		Vector2(T x, T y) : x{ x }, y{ y }{}
 
 		T operator [] (unsigned int index) const { assert(index < 2); return (&x)[index]; }
@@ -25,7 +25,7 @@ namespace viper {
 
 
 		Vector2& operator + (float s) const { return Vector2{ x + s, y + s }; }
-		Vector2 operator * (float s) const { return Vector2{ x * s, y * s }; }
+		Vector2& operator * (float s) const { return Vector2{ x * s, y * s }; }
 		Vector2& operator - (float s) const { return Vector2{ x - s, y - s }; }
 		Vector2& operator / (float s) const { return Vector2{ x / s, y / s }; }
 
