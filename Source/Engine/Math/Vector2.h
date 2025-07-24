@@ -12,7 +12,7 @@ namespace viper {
 			struct { T u, v; };
 		 };
 		Vector2() = default;
-		Vector2(T x, T y) : x{ x }, y{ y }{}
+		Vector2(T x, T y) : x{ x }, y{ y } {}
 
 		T operator [] (unsigned int index) const { assert(index < 2); return (&x)[index]; }
 		T& operator [] (unsigned int index) { assert(index < 2); return (&x)[index]; }

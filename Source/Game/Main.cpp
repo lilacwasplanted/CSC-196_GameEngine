@@ -32,12 +32,15 @@ int main(int argc, char* argv[]) {
 	audio.Initialize();
 
 	vector<viper::vec2> verts{
-	{-5, -5 },
-	{ 5, -5 },
-	{ 5, 5 },
-	{-5, 5 },
-	{-5,-5 },
+	{-4, 1 },
+	{ 4, 1 },
+	{-3, -4 },
+	{0, 4 },
+	{3, -4 },
+	{-4, 1},
+
 	};
+
 	viper::Model model;
 
 

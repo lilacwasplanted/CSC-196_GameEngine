@@ -8,15 +8,18 @@ using namespace std;
 namespace viper {
 	class Model {
 		public:
+
 			Model() = default;
 			Model(const vector<vec2> verts, const vec3& color) :
 				_verts{ verts },
 				_color{ color }
-			{}
+			{	}
+
 			void Draw(class Renderer& renderer, const vec2& position, float rotation, float scale);
-		private:
+		
+	private:
 			vector<vec2> _verts;
-			vec3 _color{ 1,1,1 };
+			vec3 _color{ 255,255,255 };
 
 	};
 }
