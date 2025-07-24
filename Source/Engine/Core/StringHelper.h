@@ -14,6 +14,7 @@ namespace viper {
 		for (char& c : result) {
 			c = tolower(c);
 		}
+		return result;
 	}
 /// <summary>
 /// Converts All Characters In A String To Uppercase.
@@ -25,5 +26,6 @@ namespace viper {
 		for (char& c : result) {
 			c = toupper(c);
 		}
+		return result;
 	}
 }

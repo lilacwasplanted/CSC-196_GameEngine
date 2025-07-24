@@ -11,19 +11,24 @@ namespace viper {
 	/// <param name="result">The FMOD_RESULT vaule returned by an FMOD function call.</param>
 	/// <returns>True if the FMOD operation was successful (FMOD_OK); otherwise, false.</returns>
 	bool as::CheckFMODResult(FMOD_RESULT result) {
-	if (result != FMOD_OK) {
-				cerr << FMOD_ErrorString(result) << endl;
-				return false;
-			}
+		if (result != FMOD_OK) {
+			cerr << FMOD_ErrorString(result) << endl;
+			return false;
+		}
 	}
-
+		/// <summary>
+		/// Initializes the audio system using FMOD.
+		/// </summary>
+		/// <returns>True if the audio system was successfully initilalized; otherwise false. </returns>
 		bool as::Initialize() {
 			FMOD_RESULT result = FMOD::System_Create(&_system);
-			if (!CheckFMODResult(result) == false) return false;
+			if (!CheckFMODResult(result)) return false;
 			
 			void* extradriverdata = nullptr;
 			result = _system->init(32, FMOD_INIT_NORMAL, extradriverdata);
-			if (!CheckFMODResult(result) == false) return false;
+			if (!CheckFMODResult(result)) return false;
+
+
 			return true;
 		}
 		/// <summary>

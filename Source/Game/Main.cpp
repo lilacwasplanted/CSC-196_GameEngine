@@ -1,8 +1,10 @@
 #include "Core/Random.h"
 #include "Core/Time.h"
 #include "Math\Vector2.h"
+#include "Math\Vector3.h"
 #include "Math\Math.h"
 #include "Renderer\Renderer.h"
+#include "Renderer\Model.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
 
@@ -13,6 +15,8 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+
+
 	//Initialize Engine Systems
 	viper::Renderer renderer;
 	viper::Time time;
@@ -27,17 +31,22 @@ int main(int argc, char* argv[]) {
 	viper::as audio;
 	audio.Initialize();
 
-	//Initialize objects
+	vector<viper::vec2> verts{
+	{-5, -5 },
+	{ 5, -5 },
+	{ 5, 5 },
+	{-5, 5 },
+	{-5,-5 },
+	};
+	viper::Model model;
 
 
-
+	//Initialize Sounds
 	audio.AddSound("bass.wav", "bass");
 	audio.AddSound("snare.wav", "snare");
 	audio.AddSound("lag.wav", "lag");
 	audio.AddSound("open-hat.wav", "open-hat");
 
-	vector<viper::vec2> points;
-	vector<viper::vec2> disco;
 	vector<viper::vec2> stars;
 	for (int i = 0; i < 100; i++) {
 		stars.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
@@ -54,40 +63,26 @@ int main(int argc, char* argv[]) {
 				quit = true;
 			}
 		}
+		
+		if (input.GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
 		//Update Engine Systems
 		input.Update();
 		audio.Update();
 
-
-
-		if (input.GetKeyPressed(SDL_SCANCODE_Q))
-		{
-			audio.PlaySound("bass");
-		}
-
-		if (input.GetKeyPressed(SDL_SCANCODE_W))
-		{
-			audio.PlaySound("snare");
-		}
-
-		if (input.GetKeyPressed(SDL_SCANCODE_E))
-		{
-			audio.PlaySound("lag");
-		}
-
-		if (input.GetKeyPressed(SDL_SCANCODE_R))
-		{
-			audio.PlaySound("open-hat");
-		}
-
+		if (input.GetKeyPressed(SDL_SCANCODE_Q))audio.PlaySound("bass");
+		if (input.GetKeyPressed(SDL_SCANCODE_W))audio.PlaySound("snare");
+		if (input.GetKeyPressed(SDL_SCANCODE_E))audio.PlaySound("open-hat");
+		if (input.GetKeyPressed(SDL_SCANCODE_R))audio.PlaySound("lag");
 
 		//Draw
-		//viper::vec3 color{ 1, 0, 0 };
-		renderer.SetColor(0,0,0);
+		viper::vec3 color{ 0, 0, 0 };
+
+		renderer.SetColor(color.r, color.g, color.b);
 		renderer.Clear();
 
-		/*Creating Stars
+		model.Draw(renderer, input.GetMousePos(), time.GetTime(), 10.0f);
+
 		viper::vec2 speed{ 140.0f, 0.0f };
 		float length = speed.Length();
 
@@ -101,24 +96,6 @@ int main(int argc, char* argv[]) {
 			renderer.DrawPoint(star.x, star.y);
 			renderer.Present(); // Render the screen
 		}
-		for (int i = 0; i < (int)points.size() - 1; i++) {
-			// set color or random color
-			renderer.DrawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
-		}
-
-		for (int i = 0; i < (int)points.size() - 1; i++) {
-			// set color or random color
-			renderer.SetColor((uint8_t)viper::random::getRandomInt(255), viper::random::getRandomInt(255), viper::random::getRandomInt(255), viper::random::getRandomInt(255));
-			renderer.DrawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
-		}
-		*/
-		/*       Code for Disco Lights
-		for (auto& lights : disco) {
-			  renderer.SetColor(viper::random::getRandomInt(256), viper::random::getRandomInt(256), viper::random::getRandomInt(256), 255);
-			  renderer.DrawLine(viper::random::getRandomInt(1280), viper::random::getRandomInt(1024), viper::random::getRandomInt(1280), viper::random::getRandomInt(1024));
-		}
-	 */
-		renderer.Present();
 
 	}
 	input.Shutdown();
