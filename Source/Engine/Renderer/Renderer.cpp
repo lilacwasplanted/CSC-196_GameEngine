@@ -3,19 +3,25 @@
 	using namespace std;
 
 	namespace viper {
-		bool Renderer::Initialize()
-		{
+		bool Renderer::Initialize() {
 			if (!SDL_Init(SDL_INIT_VIDEO)) {
-
-				cerr << SDL_GetError() << endl;
+				cerr << "SDL_Init Error: " << SDL_GetError() << endl;
 				return false;
 			}
+
+			if (!TTF_Init()) {
+				cerr << "TTF_Init Error: " << SDL_GetError() << endl;
+				return false;
+			}
+
 			return true;
 		}
 
-		void Renderer::Shutdown()
-		{
-	//		SDL_Renderer
+		void Renderer::Shutdown() {
+			TTF_Quit();
+			SDL_DestroyRenderer(_renderer);
+			SDL_DestroyWindow(_window);
+			SDL_Quit();
 		}
 
 		bool Renderer::CreateWindow(const string& name, int width, int height)

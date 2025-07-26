@@ -1,8 +1,10 @@
 #pragma once
+#include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3/SDL.h>
 #include <iostream>
 using namespace std;
 namespace viper {
+
 	class Renderer
 	{
 	public:
@@ -22,5 +24,9 @@ namespace viper {
 	private:
 		SDL_Window* _window{ nullptr };
 		SDL_Renderer* _renderer{ nullptr };
+
+	private:
+	friend class Text;
+
 	};
 };

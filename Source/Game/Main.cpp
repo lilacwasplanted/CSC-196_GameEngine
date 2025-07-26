@@ -7,7 +7,10 @@
 #include "Renderer\Model.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
+#include "Renderer/Text.h"
+#include "Renderer/Font.h"
 
+#include <SDL3_ttf/SDL_ttf.h>
 #include <fmod.hpp>
 #include <SDL3/SDL.h>
 #include <iostream>
@@ -37,11 +40,10 @@ int main(int argc, char* argv[]) {
 	{-3, -4 },
 	{0, 4 },
 	{3, -4 },
-	{-4, 1},
-
+	{-4, 1}
 	};
 
-	viper::Model model;
+	viper::Model model{ verts,{255,255,255} };
 
 
 	//Initialize Sounds
@@ -54,6 +56,14 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < 100; i++) {
 		stars.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
 	}
+
+
+	Font* font = new Font();
+	font->Load("Farmshow.ttf", 20);
+
+	Text* text = new Text(font);
+	//text->Create(_engine.GetRenderer(), "Hello World", viper::vec3{ .1, 1, 1, 1 });
+
 
 	SDL_Event e;
 	bool quit = false;
@@ -81,10 +91,13 @@ int main(int argc, char* argv[]) {
 		//Draw
 		viper::vec3 color{ 0, 0, 0 };
 
-		renderer.SetColor(color.r, color.g, color.b);
+		renderer.SetColor(color.r, color.g, color.b);			//Background color
 		renderer.Clear();
+		
+		model.Draw(renderer,input.GetMousePos(), 5.0f, 10.0f); // Draw the model at the center of the screen
 
-		model.Draw(renderer, input.GetMousePos(), time.GetTime(), 10.0f);
+		//text->Draw(_engine.GetRenderer(), 40.0f, 40.0f);
+
 
 		viper::vec2 speed{ 140.0f, 0.0f };
 		float length = speed.Length();
@@ -97,9 +110,11 @@ int main(int argc, char* argv[]) {
 
 			renderer.SetColor((uint8_t)viper::random::getRandomInt(256), viper::random::getRandomInt(256), viper::random::getRandomInt(256), 255);
 			renderer.DrawPoint(star.x, star.y);
-			renderer.Present(); // Render the screen
 		}
 
+
+
+			renderer.Present(); // Render the screen
 	}
 	input.Shutdown();
 	audio.Shutdown();
