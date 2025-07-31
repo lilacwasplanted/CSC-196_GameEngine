@@ -19,4 +19,13 @@ namespace viper {
 			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
 		}
 	}
+	/// <summary>
+	/// Draws the model using the specified renderer and transform.
+	/// </summary>
+	/// <param name="renderer">The renderer used to draw the model.</param>
+	/// <param name="transform"> The transformation to apply, including position, rotation, and scale.</param>
+	void Model::Draw(Renderer& renderer, const Transform& transform)
+	{
+		Draw(renderer, transform.pos, transform.rotation, transform.scale);
+	}
 }
