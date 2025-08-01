@@ -13,10 +13,10 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Enemy.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
   </ItemGroup>

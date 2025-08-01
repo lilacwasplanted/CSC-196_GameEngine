@@ -13,7 +13,7 @@ namespace viper {
 	bool as::CheckFMODResult(FMOD_RESULT result) {
 		if (result != FMOD_OK) {
 			cerr << FMOD_ErrorString(result) << endl;
-			return false;
+			return true;
 		}
 	}
 		/// <summary>

@@ -39,7 +39,7 @@
 				SDL_Quit();
 				return false;
 			}
-			return false;
+			return true;
 		}
 
 		void Renderer::SetColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
