@@ -2,12 +2,12 @@
 #include "../Renderer/Model.h"
 
 namespace viper {
-	void viper::Actor::Update(float dt)
+	void Actor::Update(float dt)
 	{
 		//
 	}
 
-	void viper::Actor::Draw(Renderer& renderer)
+	void Actor::Draw(Renderer& renderer)
 	{
 		_model->Draw(renderer, _transform);
 	}

@@ -54,7 +54,7 @@
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Game\Actor.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

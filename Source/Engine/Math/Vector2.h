@@ -34,12 +34,11 @@ namespace viper {
 		Vector2 operator / (float s) const { return Vector2{ x / s, y / s }; }
 
 		Vector2& operator += (float s)  {x += s;	y += s; return *this; }
-		Vector2& operator *= (float s)  {x -= s;	y -= s; return *this; }
-		Vector2& operator -= (float s) { x *= s;	y *= s; return *this;}
+		Vector2& operator -= (float s)  {x -= s;	y -= s; return *this; }
+		Vector2& operator *= (float s) { x *= s;	y *= s; return *this;}
 		Vector2& operator /= (float s) { x /= s;	y /= s; return *this; }
 
 		//sqrt (x*x + y*y)
-		///Hello
 		
 		/// <summary>
 		/// Calculates the squared length (magnatitude) of a 2D vector.

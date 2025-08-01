@@ -12,29 +12,37 @@
 #include "Math/Math.h"
 #include "Core/Time.h"
 
+#include "Game/Player.h"
+
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3/SDL.h>
 #include <fmod.hpp>
 #include <iostream>
 #include <vector>
+#include <memory>
+#include <string>
+
+
 using namespace std;
 
 int main(int argc, char* argv[]) {
 
 
 	//Initialize Engine Systems
-	viper::Renderer renderer;
 	viper::Time time;
 
-	renderer.Initialize();
-	renderer.CreateWindow("Viper Engine", 1280, 1024);
+	unique_ptr<viper::Renderer> renderer = make_unique<viper::Renderer>();
+	unique_ptr<viper::as> audio = make_unique<viper::as>();
+	unique_ptr<viper::is> input = make_unique<viper::is>();
 
-	viper::is input;
-	input.Initialize();
+	renderer->Initialize();
+	audio->Initialize();
+	input->Initialize();
+
+	renderer->CreateWindow("Viper Engine", 1280, 1024);
+
 
 	//Create Audio System
-	viper::as audio;
-	audio.Initialize();
 
 	vector<viper::vec2> verts{
 	{-4, 1 },
@@ -45,22 +53,28 @@ int main(int argc, char* argv[]) {
 	{-4, 1}
 	};
 
-	viper::Model* model = new viper::Model{ verts,{255,255,255} };
-	viper::Transform transform{ viper::vec2{640, 512}, 0, 20.0f };
+	Font* font = new Font();
+	font->Load("Farmshow.ttf", 80);
 
-	viper::Actor actor{ transform, model };
+	Text* text = new Text(font);
+	text->Create(*renderer, "Chihiro", viper::vec3{ 1,1,1 });
+
+
+
+	shared_ptr<viper::Model> model = make_shared<viper::Model>(verts, viper::vec3{ 0, 0, 1 });
+
+	//Create Actors
+	vector <unique_ptr<viper::Actor>> actors;
+	for (int i = 0; i < 10; i++) {
+		viper::Transform transform{ viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024}, 0.0f, 10.0f };
+		unique_ptr<Player> player = make_unique<Player>( transform, model);
+		actors.push_back(move(player));
+	}
 
 	vector<viper::vec2> stars;
 	for (int i = 0; i < 100; i++) {
 		stars.push_back(viper::vec2{ viper::random::getRandomFloat() * 1280, viper::random::getRandomFloat() * 1024 });
 	}
-
-	Font* font = new Font();
-	font->Load("Farmshow.ttf", 80);
-
-	Text* text = new Text(font);
-	text->Create(renderer, "Chihiro", viper::vec3{1,1,1});
-
 
 	SDL_Event e;
 	bool quit = false;
@@ -74,58 +88,64 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		if (input.GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
+		if (input->GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
 		//Update Engine Systems
-		input.Update();
-		audio.Update();
+		input->Update();
+		audio->Update();
 
 
 		float speed = 200.0f;
 		viper::vec2 direction{ 0, 0 };
-		
+		/*
 
-		if (input.GetKeyDown(SDL_SCANCODE_LEFT)) transform.rotation -= viper::math::degToRad( 90 * time.GetDeltaTime()); 	
-		if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) transform.rotation += viper::math::degToRad( 90 * time.GetDeltaTime()); 	
+		if (input.GetKeyDown(SDL_SCANCODE_LEFT)) actor.GetTransform().rotation -= viper::math::degToRad(90 * time.GetDeltaTime());
+		if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) actor.GetTransform().rotation += viper::math::degToRad(90 * time.GetDeltaTime());*/
 
-		if (input.GetKeyDown(SDL_SCANCODE_W))direction.y = -1; // speed * time.GetDeltaTime();
-		if (input.GetKeyDown(SDL_SCANCODE_S)) direction.y = 1; // speed * time.GetDeltaTime();
-		if (input.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1; // speed * time.GetDeltaTime();
-		if (input.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1; // speed * time.GetDeltaTime();
+		if (input->GetKeyDown(SDL_SCANCODE_W))direction.y = -1; // speed * time.GetDeltaTime();
+		if (input->GetKeyDown(SDL_SCANCODE_S)) direction.y = 1; // speed * time.GetDeltaTime();
+		if (input->GetKeyDown(SDL_SCANCODE_A)) direction.x = -1; // speed * time.GetDeltaTime();
+		if (input->GetKeyDown(SDL_SCANCODE_D)) direction.x = 1; // speed * time.GetDeltaTime();
 
 		if (direction.LengthSqr() > 0) {
 		direction = direction.Normalized();
-		actor.GetTransform().pos += (direction * speed) * time.GetDeltaTime();
+		for (auto& actor : actors) {
+			actor->Draw(*renderer); // Draw the actor
+		}
 		}
 		//Draw
 		viper::vec3 color{ 0, 0, 0 };
 
-		renderer.SetColor(color.r, color.g, color.b);			//Background color
-		renderer.Clear();
+		renderer->SetColor(color.r, color.g, color.b);			//Background color
+		renderer->Clear();
 		
 		//model.Draw(renderer,input.GetMousePos(), 5.0f, 25.0f); // Draw the model at the center of the screen
-		//model.Draw(renderer, transform); // Draw the model using a transform
-		actor.Draw(renderer); // Draw the actor
 
-		text->Draw(renderer, 40.0f, 40.0f);
+		for(auto& actor : actors){
+			actor->Draw(*renderer); // Draw the actor
+		}
+
+		text->Draw(*renderer, 40.0f, 40.0f);
 
 
-		viper::vec2 sped{ 140.0f, 0.0f };
-		float length = sped.Length();
+		viper::vec2 speeds{ -140.0f, 0.0f };
+		float length = speeds.Length();
 
 		for (auto& star : stars) {
-			star += sped * time.GetDeltaTime();
+			star += speeds * time.GetDeltaTime();
 
 			if (star[0] > 1280)  star[0] = 0;
 			if (star[0] < 0)  star[0] = 1280;
 
-			renderer.SetColor((uint8_t)viper::random::getRandomInt(256), viper::random::getRandomInt(256), viper::random::getRandomInt(256), 255);
-			renderer.DrawPoint(star.x, star.y);
+			renderer->SetColor((uint8_t)viper::random::getRandomInt(256), viper::random::getRandomInt(256), viper::random::getRandomInt(256), 255);
+			renderer->DrawPoint(star.x, star.y);
 		}
 
-			renderer.Present(); // Render the screen
+			renderer->Present(); // Render the screen
 	}
-	input.Shutdown();
-	audio.Shutdown();
+	input->Shutdown();
+	renderer->Shutdown();
+	audio->Shutdown();
+	return 0;
 }
 

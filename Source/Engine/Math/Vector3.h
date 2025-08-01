@@ -33,8 +33,8 @@ namespace viper {
 		Vector3& operator / (float s) const { return Vector3{ x / s, y / s, z / s };}
 
 		Vector3& operator += (float s)  {x += s;	y += s; ;	z += s;	return *this; }
-		Vector3& operator *= (float s)  {x -= s;	y -= s; ;	z -= s;	return *this; }
-		Vector3& operator -= (float s) { x *= s;	y *= s; ;	z *= s;	return *this;}
+		Vector3& operator -= (float s)  {x -= s;	y -= s; ;	z -= s;	return *this; }
+		Vector3& operator *= (float s) { x *= s;	y *= s; ;	z *= s;	return *this;}
 		Vector3& operator /= (float s) { x /= s;	y /= s; ;	z /= s;	return *this; }
 
 		//sqrt (x*x + y*y)
