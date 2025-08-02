@@ -8,11 +8,9 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-namespace viper
+namespace viper::file
 {
 
-    class File
-    {
 
         string GetCurrentDirectory() {
             error_code ec;
@@ -112,5 +110,5 @@ namespace viper
 			file.close();
             return true;
         }
-    };
+   
 }

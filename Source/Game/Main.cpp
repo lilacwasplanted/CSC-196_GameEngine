@@ -15,6 +15,7 @@
 #include "Core/File.h"
 #include "Engine.h"
 
+
 #include "Game/Player.h"
 #include "Game/Enemy.h"
 
@@ -24,89 +25,56 @@
 #include <fmod.hpp>
 #include <iostream>
 #include <memory>
-#include <iomanip> // Add this include directive at the top of the file
+#include <random> // Add this include directive at the top of the file
 #include <vector>
 #include <string>
 
 
 using namespace std;
  namespace ran = viper::random;
+ namespace file = viper::file;
 
 int main(int argc, char* argv[]) {
 
-	//// Get current directory path
-	//cout << "Directory Operations:\n";
-	//cout << "Current directory: " << viper::file::GetCurrentDirectory() << "\n";
+	// Get current directory path
+	cout << "Directory Operations:\n";
+	cout << "Current directory: " << file::GetCurrentDirectory() << "\n";
 
-	//// Set current directory path (current path + "Assets")
-	//cout << "Setting directory to 'Assets'...\n";
-	//viper::file::SetCurrentDirectory("Assets");
-	//cout << "New directory: " << viper::file::GetCurrentDirectory() << "\n\n";
+	// Set current directory path (current path + "Assets")
+	cout << "Setting directory to 'Assets'...\n";
+	viper::file::SetCurrentDirectory("Assets");
+	cout << "New directory: " << viper::file::GetCurrentDirectory() << "\n\n";
 
-	//// Get filenames in the current directory
-	//cout << "Files in Directory:\n";
-	//auto filenames = viper::file::GetFilesInDirectory(viper::file::GetCurrentDirectory());
-	//for (const auto& filename : filenames) {
-	//	cout << filename << "\n";
-	//}
-	//cout << "\n";
-
-	//// Get filename (filename.extension) only
-	//if (!filenames.empty()) {
-	//	cout << "Path Analysis:\n";
-	//	string filename = viper::file::GetFilename(filenames[0]);
-	//	cout << "Filename only: " << filename << "\n";
-
-	//	// Get extension only
-	//	string ext = viper::file::GetExtension(filenames[0]);
-	//	cout << "Extension: " << ext << "\n\n";
-	//}
-
-	//// Read and display text file
-	//cout << "Text File Reading:\n";
-	//string str;
-	//bool success = viper::file::ReadTextFile("test.txt", str);
-	//if (success) {
-	//	cout << "Contents of test.txt:\n";
-	//	cout << str << "\n";
-	//}
-	//else {
-	//	cout << "Failed to read test.txt\n";
-	//}
-
-	// Test getInt() variants
-	cout << "Integer Functions:\n";
-	cout << "getInt(): " << ran::getInt() << "\n";
-	cout << "getInt(): " << ran::getInt() << "\n";
-	cout << "getInt(10): " << ran::getInt(10) << "\n";
-	cout << "getInt(10): " << ran::getInt(10) << "\n";
-	cout << "getInt(5, 15): " << ran::getInt(5, 15) << "\n";
-	cout << "getInt(5, 15): " << ran::getInt(5, 15) << "\n";
-	cout << "getInt(-10, 10): " << ran::getInt(-10, 10) << "\n\n";
-
-	// Test getReal() variants with float
-	cout << "Float Functions:\n";
-	cout << fixed << setprecision(6);
-	cout << "getReal<float>(): " << ran::getReal<float>() << "\n";
-	cout << "getReal<float>(): " << ran::getReal<float>() << "\n";
-	cout << "getReal<float>(5.0f): " << ran::getReal<float>(5.0f) << "\n";
-	cout << "getReal<float>(2.5f, 7.5f): " << ran::getReal<float>(2.5f, 7.5f) << "\n";
-	cout << "getReal<float>(-1.0f, 1.0f): " << ran::getReal<float>(-1.0f, 1.0f) << "\n\n";
-
-	// Test getReal() variants with double
-	cout << "Double Functions:\n";
-	cout << setprecision(10);
-	cout << "getReal<double>(): " << ran::getReal<double>() << "\n";
-	cout << "getReal<double>(100.0): " << ran::getReal<double>(100.0) << "\n";
-	cout << "getReal<double>(0.0, 2.0): " << ran::getReal<double>(0.0, 2.0) << "\n\n";
-
-	// Test getBool()
-	cout << "Boolean Functions:\n";
-	for (int i = 0; i < 10; ++i) {
-		cout << "getBool(): " << boolalpha << ran::getBool() << "\n";
+	// Get filenames in the current directory
+	cout << "Files in Directory:\n";
+	auto filenames = viper::file::GetFilesInDirectory(viper::file::GetCurrentDirectory());
+	for (const auto& filename : filenames) {
+		cout << filename << "\n";
 	}
 	cout << "\n";
 
+	// Get filename (filename.extension) only
+	if (!filenames.empty()) {
+		cout << "Path Analysis:\n";
+		string filename = viper::file::GetFilename(filenames[0]);
+		cout << "Filename only: " << filename << "\n";
+
+		// Get extension only
+		string ext = viper::file::GetExtension(filenames[0]);
+		cout << "Extension: " << ext << "\n\n";
+	}
+
+	// Read and display text file
+	cout << "Text File Reading:\n";
+	string str;
+	bool success = viper::file::ReadTextFile("test.txt", str);
+	if (success) {
+		cout << "Contents of test.txt:\n";
+		cout << str << "\n";
+	}
+	else {
+		cout << "Failed to read test.txt\n";
+	}
 
 	//Initialize Engine Systems
 	viper::GetEngine().Initialize();
@@ -174,8 +142,6 @@ int main(int argc, char* argv[]) {
 		RENDERER.Clear();
 		
 		//model.Draw(renderer,input.GetMousePos(), 5.0f, 25.0f); // Draw the model at the center of the screen
-
-
 		scene.Draw(RENDERER);// Draw the scene
 
 		for(auto& actor : actors){
@@ -183,7 +149,6 @@ int main(int argc, char* argv[]) {
 		}
 
 		text->Draw(RENDERER, 40.0f, 40.0f);
-
 
 		viper::vec2 speeds{ -140.0f, 0.0f };
 		float length = speeds.Length();
@@ -203,4 +168,3 @@ int main(int argc, char* argv[]) {
 	viper::GetEngine().Shutdown(); // Shutdown the engine
 	return 0;
 }
-
