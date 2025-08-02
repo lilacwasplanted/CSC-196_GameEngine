@@ -1,6 +1,8 @@
 #include "Renderer/Renderer.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
+#include "Framework/Scene.h"
+#include "Framework/Actor.h"
 #include "Math/Transform.h"
 #include "Renderer/Model.h"
 #include "Renderer/Text.h"
@@ -8,10 +10,9 @@
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
 #include "Core/Random.h"
-#include "Framework/Scene.h"
-#include "Framework/Actor.h"
 #include "Math/Math.h"
 #include "Core/Time.h"
+#include "Core/File.h"
 #include "Engine.h"
 
 #include "Game/Player.h"
@@ -28,9 +29,50 @@
 
 
 using namespace std;
-using namespace viper::random;
+ namespace ran = viper::random;
 
 int main(int argc, char* argv[]) {
+
+	// Get current directory path
+	cout << "Directory Operations:\n";
+	cout << "Current directory: " << viper::file::GetCurrentDirectory() << "\n";
+
+	// Set current directory path (current path + "Assets")
+	cout << "Setting directory to 'Assets'...\n";
+	viper::file::SetCurrentDirectory("Assets");
+	cout << "New directory: " << viper::file::GetCurrentDirectory() << "\n\n";
+
+	// Get filenames in the current directory
+	cout << "Files in Directory:\n";
+	auto filenames = viper::file::GetFilesInDirectory(viper::file::GetCurrentDirectory());
+	for (const auto& filename : filenames) {
+		cout << filename << "\n";
+	}
+	cout << "\n";
+
+	// Get filename (filename.extension) only
+	if (!filenames.empty()) {
+		cout << "Path Analysis:\n";
+		string filename = viper::file::GetFilename(filenames[0]);
+		cout << "Filename only: " << filename << "\n";
+
+		// Get extension only
+		string ext = viper::file::GetExtension(filenames[0]);
+		cout << "Extension: " << ext << "\n\n";
+	}
+
+	// Read and display text file
+	cout << "Text File Reading:\n";
+	string str;
+	bool success = viper::file::ReadTextFile("test.txt", str);
+	if (success) {
+		cout << "Contents of test.txt:\n";
+		cout << str << "\n";
+	}
+	else {
+		cout << "Failed to read test.txt\n";
+	}
+
 	//Initialize Engine Systems
 	viper::GetEngine().Initialize();
 
@@ -57,7 +99,7 @@ int main(int argc, char* argv[]) {
 
 	viper::Scene scene;
 	for (int i = 0; i < 10; i++) {
-		viper::Transform transform{ viper::vec2{ getRandomFloat() * 1280, getRandomFloat() * 1024}, 0.0f, 10.0f };
+		viper::Transform transform{ viper::vec2{ ran::getRandomFloat() * 1280, ran::getRandomFloat() * 1024}, 0.0f, 10.0f };
 		unique_ptr<Player> player = make_unique<Player>(transform, model);
 		scene.AddActor(move(player));
 	}
@@ -65,14 +107,14 @@ int main(int argc, char* argv[]) {
 	//Create Actors
 	vector <unique_ptr<viper::Actor>> actors;
 	for (int i = 0; i < 10; i++) {
-		viper::Transform transform{ viper::vec2{ getRandomFloat() * 1280, getRandomFloat() * 1024}, 0.0f, 10.0f };
+		viper::Transform transform{ viper::vec2{ ran::getRandomFloat() * 1280, ran::getRandomFloat() * 1024}, 0.0f, 10.0f };
 		unique_ptr<Player> player = make_unique<Player>( transform, model);
 		actors.push_back(move(player));
 	}
 
 	vector<viper::vec2> stars;
 	for (int i = 0; i < 100; i++) {
-		stars.push_back(viper::vec2{ getRandomFloat() * 1280, getRandomFloat() * 1024 });
+		stars.push_back(viper::vec2{ ran::getRandomFloat() * 1280, ran::getRandomFloat() * 1024 });
 	}
 
 	SDL_Event e;
@@ -117,7 +159,7 @@ int main(int argc, char* argv[]) {
 			if (star[0] > 1280)  star[0] = 0;
 			if (star[0] < 0)  star[0] = 1280;
 
-			RENDERER.SetColor((uint8_t)getRandomInt(256), getRandomInt(256),getRandomInt(256), 255);
+			RENDERER.SetColor((uint8_t)ran::getRandomInt(256), ran::getRandomInt(256), ran::getRandomInt(256), 255);
 			RENDERER.DrawPoint(star.x, star.y);
 		}
 
