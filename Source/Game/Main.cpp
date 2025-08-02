@@ -23,8 +23,9 @@
 #include <SDL3/SDL.h>
 #include <fmod.hpp>
 #include <iostream>
-#include <vector>
 #include <memory>
+#include <iomanip> // Add this include directive at the top of the file
+#include <vector>
 #include <string>
 
 
@@ -33,45 +34,79 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-	// Get current directory path
-	cout << "Directory Operations:\n";
-	cout << "Current directory: " << viper::file::GetCurrentDirectory() << "\n";
+	//// Get current directory path
+	//cout << "Directory Operations:\n";
+	//cout << "Current directory: " << viper::file::GetCurrentDirectory() << "\n";
 
-	// Set current directory path (current path + "Assets")
-	cout << "Setting directory to 'Assets'...\n";
-	viper::file::SetCurrentDirectory("Assets");
-	cout << "New directory: " << viper::file::GetCurrentDirectory() << "\n\n";
+	//// Set current directory path (current path + "Assets")
+	//cout << "Setting directory to 'Assets'...\n";
+	//viper::file::SetCurrentDirectory("Assets");
+	//cout << "New directory: " << viper::file::GetCurrentDirectory() << "\n\n";
 
-	// Get filenames in the current directory
-	cout << "Files in Directory:\n";
-	auto filenames = viper::file::GetFilesInDirectory(viper::file::GetCurrentDirectory());
-	for (const auto& filename : filenames) {
-		cout << filename << "\n";
+	//// Get filenames in the current directory
+	//cout << "Files in Directory:\n";
+	//auto filenames = viper::file::GetFilesInDirectory(viper::file::GetCurrentDirectory());
+	//for (const auto& filename : filenames) {
+	//	cout << filename << "\n";
+	//}
+	//cout << "\n";
+
+	//// Get filename (filename.extension) only
+	//if (!filenames.empty()) {
+	//	cout << "Path Analysis:\n";
+	//	string filename = viper::file::GetFilename(filenames[0]);
+	//	cout << "Filename only: " << filename << "\n";
+
+	//	// Get extension only
+	//	string ext = viper::file::GetExtension(filenames[0]);
+	//	cout << "Extension: " << ext << "\n\n";
+	//}
+
+	//// Read and display text file
+	//cout << "Text File Reading:\n";
+	//string str;
+	//bool success = viper::file::ReadTextFile("test.txt", str);
+	//if (success) {
+	//	cout << "Contents of test.txt:\n";
+	//	cout << str << "\n";
+	//}
+	//else {
+	//	cout << "Failed to read test.txt\n";
+	//}
+
+	// Test getInt() variants
+	cout << "Integer Functions:\n";
+	cout << "getInt(): " << ran::getInt() << "\n";
+	cout << "getInt(): " << ran::getInt() << "\n";
+	cout << "getInt(10): " << ran::getInt(10) << "\n";
+	cout << "getInt(10): " << ran::getInt(10) << "\n";
+	cout << "getInt(5, 15): " << ran::getInt(5, 15) << "\n";
+	cout << "getInt(5, 15): " << ran::getInt(5, 15) << "\n";
+	cout << "getInt(-10, 10): " << ran::getInt(-10, 10) << "\n\n";
+
+	// Test getReal() variants with float
+	cout << "Float Functions:\n";
+	cout << fixed << setprecision(6);
+	cout << "getReal<float>(): " << ran::getReal<float>() << "\n";
+	cout << "getReal<float>(): " << ran::getReal<float>() << "\n";
+	cout << "getReal<float>(5.0f): " << ran::getReal<float>(5.0f) << "\n";
+	cout << "getReal<float>(2.5f, 7.5f): " << ran::getReal<float>(2.5f, 7.5f) << "\n";
+	cout << "getReal<float>(-1.0f, 1.0f): " << ran::getReal<float>(-1.0f, 1.0f) << "\n\n";
+
+	// Test getReal() variants with double
+	cout << "Double Functions:\n";
+	cout << setprecision(10);
+	cout << "getReal<double>(): " << ran::getReal<double>() << "\n";
+	cout << "getReal<double>(100.0): " << ran::getReal<double>(100.0) << "\n";
+	cout << "getReal<double>(0.0, 2.0): " << ran::getReal<double>(0.0, 2.0) << "\n\n";
+
+	// Test getBool()
+	cout << "Boolean Functions:\n";
+	for (int i = 0; i < 10; ++i) {
+		cout << "getBool(): " << boolalpha << ran::getBool() << "\n";
 	}
 	cout << "\n";
 
-	// Get filename (filename.extension) only
-	if (!filenames.empty()) {
-		cout << "Path Analysis:\n";
-		string filename = viper::file::GetFilename(filenames[0]);
-		cout << "Filename only: " << filename << "\n";
-
-		// Get extension only
-		string ext = viper::file::GetExtension(filenames[0]);
-		cout << "Extension: " << ext << "\n\n";
-	}
-
-	// Read and display text file
-	cout << "Text File Reading:\n";
-	string str;
-	bool success = viper::file::ReadTextFile("test.txt", str);
-	if (success) {
-		cout << "Contents of test.txt:\n";
-		cout << str << "\n";
-	}
-	else {
-		cout << "Failed to read test.txt\n";
-	}
 
 	//Initialize Engine Systems
 	viper::GetEngine().Initialize();
@@ -99,7 +134,7 @@ int main(int argc, char* argv[]) {
 
 	viper::Scene scene;
 	for (int i = 0; i < 10; i++) {
-		viper::Transform transform{ viper::vec2{ ran::getRandomFloat() * 1280, ran::getRandomFloat() * 1024}, 0.0f, 10.0f };
+		viper::Transform transform{ viper::vec2{ ran::getReal() * 1280, ran::getReal() * 1024}, 0.0f, 10.0f };
 		unique_ptr<Player> player = make_unique<Player>(transform, model);
 		scene.AddActor(move(player));
 	}
@@ -107,14 +142,14 @@ int main(int argc, char* argv[]) {
 	//Create Actors
 	vector <unique_ptr<viper::Actor>> actors;
 	for (int i = 0; i < 10; i++) {
-		viper::Transform transform{ viper::vec2{ ran::getRandomFloat() * 1280, ran::getRandomFloat() * 1024}, 0.0f, 10.0f };
+		viper::Transform transform{ viper::vec2{ ran::getReal() * 1280, ran::getReal() * 1024}, 0.0f, 10.0f };
 		unique_ptr<Player> player = make_unique<Player>( transform, model);
 		actors.push_back(move(player));
 	}
 
 	vector<viper::vec2> stars;
 	for (int i = 0; i < 100; i++) {
-		stars.push_back(viper::vec2{ ran::getRandomFloat() * 1280, ran::getRandomFloat() * 1024 });
+		stars.push_back(viper::vec2{ ran::getReal() * 1280, ran::getReal() * 1024 });
 	}
 
 	SDL_Event e;
@@ -159,7 +194,7 @@ int main(int argc, char* argv[]) {
 			if (star[0] > 1280)  star[0] = 0;
 			if (star[0] < 0)  star[0] = 1280;
 
-			RENDERER.SetColor((uint8_t)ran::getRandomInt(256), ran::getRandomInt(256), ran::getRandomInt(256), 255);
+			RENDERER.SetColor((uint8_t)ran::getInt(256), ran::getInt(256), ran::getInt(256), 255);
 			RENDERER.DrawPoint(star.x, star.y);
 		}
 
